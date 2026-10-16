@@ -39,7 +39,21 @@ export default new OAuthProvider<Cloudflare.Env>({
 
 - `layerHttpRequestScoped` (sessionless, Workers-friendly) only speaks `2026-07-28`. The official-SDK inspector fails against it with `MCP-Protocol-Version header is required`.
 - `layerHttp` speaks `2025-11-25` and `2025-06-18` but keeps the session in one isolate's memory. On real Workers that should break across isolates (inferred).
-- Which version claude.ai speaks decides between the request-scoped endpoint and a Durable Object.
+- `2026-07-28` drops `Mcp-Session-Id` and `initialize`. Servers should mint no session ids.
+- No official source says which revision claude.ai speaks. An unverified April 2026 report says it doesn't echo `Mcp-Session-Id`.
+- Cloudflare deprecated `McpAgent`. `createMcpHandler` (now in `@modelcontextprotocol/server@2`) is stateless and accepts 2025 Streamable HTTP clients.
+- Settle it by pointing claude.ai at a deployed endpoint and logging the headers.
+
+## What claude.ai requires
+
+From https://claude.com/docs/connectors/building/authentication.
+
+- Registration: DCR, CIMD, or none. CIMD is used only when AS metadata has `client_id_metadata_document_supported: true` and `"none"` in `token_endpoint_auth_methods_supported`. Otherwise DCR.
+- PKCE S256. RFC 8707 `resource` matching the MCP URL.
+- `401` with `WWW-Authenticate: Bearer resource_metadata=…`. RFC 9728 `resource` must match exactly. Only the first `authorization_servers` entry is used.
+- Callback `https://claude.ai/api/mcp/auth_callback`. Allowlist claude.com too.
+- Token and registration answer within 10 s, refresh within 30 s. `/token` accepts form-urlencoded. Refresh tokens rotate.
+- `2026-07-28` deprecates DCR in favour of CIMD.
 
 ## GitHub sign-in
 
@@ -53,7 +67,7 @@ From yielded's docs, unrun.
 
 ## Alternative
 
-yielded beta.42 ships `OAuthServer`, an MCP authorization server (see `examples/auth/src/strava-mcp.ts`). Static clients and Client ID Metadata Documents, no DCR. Could replace workers-oauth-provider and KV if claude.ai accepts CIMD and its persistence runs on D1. Neither is verified.
+yielded beta.42 ships `OAuthServer`, an MCP authorization server (see `examples/auth/src/strava-mcp.ts`). Static clients and Client ID Metadata Documents, no DCR. claude.ai accepts CIMD, so this could replace workers-oauth-provider and KV if its persistence runs on D1. That part is unverified.
 
 ## Numbers
 
