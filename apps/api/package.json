@@ -1,0 +1,19 @@
+{
+  "name": "@flashcards/api",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "alchemy dev",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@flashcards/domain": "workspace:*",
+    "alchemy": "2.0.0-beta.83",
+    "effect": "4.0.5"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -1,0 +1,22 @@
+{
+  "name": "@flashcards/web",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vp dev",
+    "build": "vp build",
+    "typecheck": "tsc"
+  },
+  "dependencies": {
+    "@flashcards/domain": "workspace:*",
+    "effect": "4.0.5",
+    "foldkit": "0.168.0"
+  },
+  "devDependencies": {
+    "@foldkit/vite-plugin": "0.27.1",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:"
+  }
+}

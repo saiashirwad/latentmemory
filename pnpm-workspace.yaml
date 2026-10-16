@@ -1,0 +1,25 @@
+packages:
+  - apps/*
+  - packages/*
+
+allowBuilds:
+  workerd: true
+
+catalogMode: prefer
+
+catalog:
+  "@types/node": ^24
+  typescript: ^7.0.2
+  vite: npm:@voidzero-dev/vite-plus-core@0.2.9
+  vite-plus: 0.2.9
+
+overrides:
+  effect: 4.0.5
+  "@effect/platform-browser": 4.0.5
+  vite: "catalog:"
+
+peerDependencyRules:
+  allowAny:
+    - vite
+  allowedVersions:
+    vite: "*"
