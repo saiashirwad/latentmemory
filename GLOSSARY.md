@@ -13,8 +13,12 @@ A lowercase, hyphenated label on a Card. The only way Cards are grouped.
 _Avoid_: Deck, folder, collection, category
 
 **Source**:
-Where a Card came from: a Conversation with an agent, or written by hand.
+Where a Card came from: a Conversation with an agent, a web page, or written by hand.
 _Avoid_: Origin, provenance, context
+
+**Motive**:
+Why a Card was worth making, such as curiosity, a long struggle to understand something, or a question asked again and again.
+_Avoid_: Reason, purpose, note
 
 **Excerpt**:
 The passage from a Conversation that made the Card worth creating.
@@ -28,8 +32,12 @@ _Avoid_: Copy, near-duplicate (a similar Card is not a Duplicate)
 One attempt at recalling a Card. Reviews are never changed or removed once recorded.
 _Avoid_: Answer, attempt, rep
 
+**Grid**:
+The two-dimensional field a Review ends on, with Effort along one side and Understanding along the other, coloured by the Rating each region gives.
+_Avoid_: Chart, slider, buttons
+
 **Assessment**:
-The point left on the grid when a Review ends, made of Effort and Understanding.
+The point left on the Grid when a Review ends, made of Effort and Understanding.
 _Avoid_: Grade, score, answer
 
 **Effort**:
@@ -40,8 +48,20 @@ _Avoid_: Difficulty (FSRS uses that for something else), hardness
 How well the Card's answer is actually grasped, as opposed to how sure one feels.
 _Avoid_: Confidence, correctness
 
+**Transcript**:
+What was said during a Review, as text. The recording itself is not kept.
+_Avoid_: Answer, response, recording
+
+**Hesitation**:
+How long a Review took to get going: from the front appearing to the first word spoken, or to Reveal when nothing is said.
+_Avoid_: Latency, delay, response time
+
+**Grading**:
+What a grader concluded from a Transcript, kept with the name of the grader that made it. It can be thrown away and made again.
+_Avoid_: Grade, score, evaluation
+
 **Suggestion**:
-The grader's guess at where the Assessment should be, made from what was said.
+Where the Assessment is expected to be, worked out from the Grading and the Hesitation.
 _Avoid_: Auto-grade, prediction
 
 **Key Concept**:
