@@ -19,7 +19,7 @@ export type Rating = typeof Rating.Type;
 
 export const ratingOf = ({ effort, understanding }: Assessment): Rating => {
   if (understanding < 0.4) return "Again";
-  if (effort < 0.25) return "Easy";
-  if (effort > 0.75) return "Hard";
+  if (understanding >= 0.8 && effort <= 0.3) return "Easy";
+  if (understanding < 0.7 || effort > 0.85) return "Hard";
   return "Good";
 };

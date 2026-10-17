@@ -7,7 +7,7 @@ import { Db } from "./src/db.ts";
 import Api from "./src/worker.ts";
 
 export default Alchemy.Stack(
-  "Flashcards",
+  "LatentMemory",
   { providers: Cloudflare.providers(), state: State.localState() },
   Effect.gen(function* () {
     const db = yield* Db;

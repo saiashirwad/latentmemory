@@ -1,5 +1,5 @@
 {
-  "name": "@flashcards/api",
+  "name": "@latentmemory/api",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@flashcards/domain": "workspace:*",
+    "@latentmemory/domain": "workspace:*",
     "alchemy": "2.0.0-beta.83",
     "effect": "4.0.5"
   },

@@ -14,6 +14,6 @@ export const init: Runtime.ApplicationInit<Model, Message> = () => ({ model: {} 
 export const update = (model: Model, _message: Message) => ({ model });
 
 export const view = (_model: Model, h: HtmlBuilder<Message>): Document => ({
-  title: "Flashcards",
-  body: h.main([], [h.h1([], ["Flashcards"])]),
+  title: "Latent Memory",
+  body: h.main([], [h.h1([], ["Latent Memory"])]),
 });
