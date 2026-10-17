@@ -1,6 +1,6 @@
-# Flashcards
+# Latent Memory
 
-Spaced-repetition practice for things noticed while learning with AI agents.
+A cognitive prosthesis for the AI era — spaced-repetition practice for things noticed while learning with AI agents, built as an antidote to *epistemic illusion* (the feeling that because an agent explained something clearly in the moment, you now own that knowledge).
 
 ## Language
 
@@ -17,11 +17,11 @@ Where a Card came from: a Conversation with an agent, a web page, or written by 
 _Avoid_: Origin, provenance, context
 
 **Motive**:
-Why a Card was worth making, such as curiosity, a long struggle to understand something, or a question asked again and again.
+Why a Card was worth making, in the maker's own words.
 _Avoid_: Reason, purpose, note
 
 **Excerpt**:
-The passage from a Conversation that made the Card worth creating.
+The passage from the Source that made the Card worth creating.
 _Avoid_: Snippet, quote, context
 
 **Duplicate**:
@@ -41,31 +41,35 @@ The point left on the Grid when a Review ends, made of Effort and Understanding.
 _Avoid_: Grade, score, answer
 
 **Effort**:
-How hard recalling the Card felt.
+Subjective phenomenology: how hard recalling the Card felt (*how hard did my brain work?*).
 _Avoid_: Difficulty (FSRS uses that for something else), hardness
 
 **Understanding**:
-How well the Card's answer is actually grasped, as opposed to how sure one feels.
+Objective fidelity: how well the Card's answer is actually grasped (*did I actually grasp the idea?*), as opposed to how sure one feels.
 _Avoid_: Confidence, correctness
 
 **Transcript**:
-What was said during a Review, as text. The recording itself is not kept.
+What was said during a Review, as text. It arrives after the Review is recorded, and the recording is not kept once it does.
 _Avoid_: Answer, response, recording
 
 **Hesitation**:
-How long a Review took to get going: from the front appearing to the first word spoken, or to Reveal when nothing is said.
+How long a Review took to get going: from the front appearing to starting to speak, or to Reveal when nothing is said.
 _Avoid_: Latency, delay, response time
 
 **Grading**:
-What a grader concluded from a Transcript, kept with the name of the grader that made it. It can be thrown away and made again.
+What a grader concluded from a Transcript, kept with the name of the grader that made it. It is made after its Review is over and can be thrown away and made again.
 _Avoid_: Grade, score, evaluation
 
 **Suggestion**:
-Where the Assessment is expected to be, worked out from the Grading and the Hesitation.
+Where the Assessment is expected to be, worked out from the Grading and the Hesitation. It is only ever shown after the Assessment, as feedback on that Review, never as a starting point on the Grid.
 _Avoid_: Auto-grade, prediction
 
+**Disagreement**:
+A Review whose Suggestion lands far from its Assessment, such as a missed Key Concept when Understanding was marked high.
+_Avoid_: Mismatch, error, wrong answer
+
 **Key Concept**:
-An idea a good answer to a Card has to include.
+An idea a good answer to a Card has to include. A Card has at most three.
 _Avoid_: Keyword, rubric item, keyterm
 
 **Rating**:
@@ -77,7 +81,7 @@ Moving past a due Card without a Review. It says nothing about memory.
 _Avoid_: Bury, defer, pass
 
 **Undo**:
-Cancelling the most recent Review, recorded as its own entry rather than by removing the Review.
+Cancelling a Review that is still its Card's latest, recorded as its own entry rather than by removing the Review.
 _Avoid_: Revert, delete review
 
 **Reset**:

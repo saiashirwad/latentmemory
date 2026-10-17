@@ -1,5 +1,5 @@
 import { Schema } from "effect";
-import { CardId, UserId } from "./ids.ts";
+import { CardId } from "./ids.ts";
 
 export const Markdown = Schema.NonEmptyString.pipe(Schema.brand("Markdown"));
 export type Markdown = typeof Markdown.Type;
@@ -16,22 +16,35 @@ export const KeyConcept = Schema.NonEmptyString.pipe(
 );
 export type KeyConcept = typeof KeyConcept.Type;
 
+export const KeyConcepts = Schema.Array(KeyConcept).pipe(
+  Schema.check(Schema.isMaxLength(3)),
+  Schema.annotate({ description: "One to three ideas a good answer must include. Keeps Cards atomic." }),
+);
+export type KeyConcepts = typeof KeyConcepts.Type;
+
+export const Motive = Schema.NonEmptyString.pipe(
+  Schema.check(Schema.isTrimmed()),
+  Schema.brand("Motive"),
+);
+export type Motive = typeof Motive.Type;
+
 export const CardContent = Schema.TaggedUnion({
   Basic: { front: Markdown, back: Markdown },
 });
 export type CardContent = typeof CardContent.Type;
 
+export const Page = Schema.Struct({ url: Schema.String, title: Schema.NonEmptyString });
+export type Page = typeof Page.Type;
+
 export const Source = Schema.TaggedUnion({
   Conversation: {
     client: Schema.NonEmptyString,
-    title: Schema.optionalKey(Schema.NonEmptyString),
+    title: Schema.NonEmptyString,
     excerpt: Markdown,
+    motive: Motive,
+    pages: Schema.Array(Page),
   },
-  WebPage: {
-    url: Schema.String,
-    title: Schema.optionalKey(Schema.NonEmptyString),
-    excerpt: Schema.optionalKey(Markdown),
-  },
+  WebPage: { ...Page.fields, excerpt: Markdown },
   Manual: {},
 });
 export type Source = typeof Source.Type;
@@ -42,9 +55,8 @@ export type CardStatus = typeof CardStatus.Type;
 export class Card extends Schema.Opaque<Card>()(
   Schema.Struct({
     id: CardId,
-    userId: UserId,
     content: CardContent,
-    keyConcepts: Schema.Array(KeyConcept),
+    keyConcepts: KeyConcepts,
     tags: Schema.UniqueArray(Tag),
     source: Source,
     status: CardStatus,
