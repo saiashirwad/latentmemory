@@ -1,5 +1,9 @@
 [providers.op]
 type = "1password"
+vault = "latentmemory-dev"
+
+[providers.op-prod]
+type = "1password"
 vault = "Dev"
 
 [secrets]
@@ -11,9 +15,9 @@ CLOUDFLARE_ACCOUNT_ID = { provider = "op", value = "flashcards/CLOUDFLARE_ACCOUN
 CLOUDFLARE_API_TOKEN  = { provider = "op", value = "flashcards/CLOUDFLARE_API_TOKEN" }
 
 [profiles.prod.secrets]
-GITHUB_CLIENT_ID      = { provider = "op", value = "flashcards-prod/GITHUB_CLIENT_ID" }
-GITHUB_CLIENT_SECRET  = { provider = "op", value = "flashcards-prod/GITHUB_CLIENT_SECRET" }
-OAUTH_TRANSACTION_KEY = { provider = "op", value = "flashcards-prod/OAUTH_TRANSACTION_KEY" }
+GITHUB_CLIENT_ID      = { provider = "op-prod", value = "flashcards-prod/GITHUB_CLIENT_ID" }
+GITHUB_CLIENT_SECRET  = { provider = "op-prod", value = "flashcards-prod/GITHUB_CLIENT_SECRET" }
+OAUTH_TRANSACTION_KEY = { provider = "op-prod", value = "flashcards-prod/OAUTH_TRANSACTION_KEY" }
 
 [daemon]
 enabled = true

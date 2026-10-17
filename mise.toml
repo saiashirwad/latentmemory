@@ -3,3 +3,7 @@ node = "24.19.0"
 pnpm = "11.13.0"
 bun = "1.4.3"
 fnox = { version = "latest", workflow = "release.yml" }
+
+[env]
+OP_SERVICE_ACCOUNT_TOKEN = "{{exec(command='security find-generic-password -s op-sa-latentmemory -w')}}"
+FNOX_CONFIG_DIR = "{{config_root}}/.fnox-no-global"
