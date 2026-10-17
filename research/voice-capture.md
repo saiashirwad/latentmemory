@@ -28,17 +28,29 @@ Measured in Playwright Chromium headless with fake device (`--use-file-for-fake-
 
 iOS Safari:
 
-- `audio/mp4` with AAC is the long-standing output (sourced, [testmuai](https://www.testmuai.com/learning-hub/mediarecorder-browser-support/), secondary). The same page says webm/opus arrives in iOS 18.4+ (unverified).
+- `audio/mp4` with AAC is the long-standing output (sourced, [testmuai](https://www.testmuai.com/learning-hub/mediarecorder-browser-support/), secondary). Safari 18.4's release notes (2025-03-31) say MediaRecorder now supports WebM files using the Opus codec (sourced, primary: [WebKit](https://webkit.org/blog/16574/webkit-features-in-safari-18-4/#media)). The iOS 26.2 MP4 tail-truncation fix is documented in [WebKit 299164, comment 14](https://bugs.webkit.org/show_bug.cgi?id=299164#c14); a 26.4 follow-up means we check audible tail and duration rather than assuming either outcome.
 - Feature-detect in order: `audio/webm;codecs=opus`, then `audio/mp4`. Send the blob's own `type` as `Content-Type`.
 - Start capture from a tap. getUserMedia needs a secure context (sourced, same page).
 
 Installed iOS PWA, permissions and recording:
 
-- Microphone permission is reported to re-prompt in standalone mode. [WebKit 215884](https://bugs.webkit.org/show_bug.cgi?id=215884) describes the grant not persisting, revoked on hash or path change, short grant windows when capture is idle. It is marked "configuration changed". A 2026 third-party PR says iOS asks on each launch and ignores the Safari grant (secondary).
+- Microphone permission is reported to re-prompt in standalone mode. The old hash-navigation bug [WebKit 215884](https://bugs.webkit.org/show_bug.cgi?id=215884) is not a blanket current permission-persistence bug; [comment 31](https://bugs.webkit.org/show_bug.cgi?id=215884#c31) (2026-02-03) separates the two. [WebKit 327237](https://bugs.webkit.org/show_bug.cgi?id=327237) (2026-10-12, NEW) reports a Home Screen re-prompt after relaunch, but its supplementary results are placeholders; treat it as a reproduction lead, not proof for our phone/build.
 - Apple forum report: a home-screen app records on first launch, then fails after close and reopen until the phone restarts. [thread 797987](https://developer.apple.com/forums/thread/797987). One user report, undated here.
 - [WebKit 185448](https://bugs.webkit.org/show_bug.cgi?id=185448) (2018, fixed) made getUserMedia work in home-screen apps at all.
 - Verdict: recording in an installed PWA should work, with a likely permission prompt per launch. **Unverified.** Test on the actual phone and iOS version before committing to the PWA shell. Keep a plain-Safari fallback.
 - Keep the route fixed while recording. Don't navigate with path or hash changes mid-session (inferred from 215884).
+
+### Decisive device test (planned, [#5](https://github.com/saiashirwad/latentmemory/issues/5))
+
+On the actual iPhone, record the model and exact iOS build, and prove standalone launch from the icon. Then:
+
+- Record and replay 10 s clips in MP4/AAC and WebM/Opus, plus a 60 s tail check.
+- Test immediate and 120 s-idle retry, reload, three force-close/relaunch cycles, hash/pushState changes, background/lock, and one answered test-call interruption.
+- Log permission prompts separately from failures. Every foreground retry must yield audible, complete audio without a reboot; interrupted clips must be marked partial; fresh capture must recover.
+- Compare failures with Safari on the same origin and device. Verify a finalized IndexedDB-queued clip survives an offline relaunch; do not promise survival of an unfinished recording.
+- Counting only; keep clips local and delete them within 24 h.
+
+No physical-device test has run. Docs and Chromium fake-device recordings cannot close #5.
 
 ## Transcription
 
@@ -133,7 +145,7 @@ const transcribe = HttpRouter.add("POST", "/transcribe",
 
 ## Open
 
-- Real iPhone, installed PWA: record 10 s, check mimeType, permission prompt on relaunch, relaunch failure from the Apple thread.
+- Real iPhone, installed PWA: run the decisive device test above before building the review screen.
 - Real mic audio with noise and mumbling, not TTS.
 - Max body size and max clip length Workers AI accepts. Not probed.
 - Whether `keyterm` takes an array. The docs say string.
@@ -143,7 +155,10 @@ const transcribe = HttpRouter.add("POST", "/transcribe",
 - https://developers.cloudflare.com/workers-ai/models/nova-3/
 - https://developers.cloudflare.com/workers-ai/models/whisper-large-v3-turbo/
 - https://www.testmuai.com/learning-hub/mediarecorder-browser-support/
+- https://webkit.org/blog/16574/webkit-features-in-safari-18-4/#media
 - https://bugs.webkit.org/show_bug.cgi?id=215884
+- https://bugs.webkit.org/show_bug.cgi?id=327237
+- https://bugs.webkit.org/show_bug.cgi?id=299164
 - https://bugs.webkit.org/show_bug.cgi?id=185448
 - https://developer.apple.com/forums/thread/797987
 - https://developer.mozilla.org/en-US/docs/Web/API/MediaRecorder/isTypeSupported_static

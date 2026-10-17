@@ -43,7 +43,9 @@ TypeSafe AI's "System One" model. Typed questions in, typed answers with probabi
 - FSRS uses only intervals and grades. Response time doesn't feed the scheduler.
 - Again/Good alone is sometimes as accurate as all four. So: core concept missing or misconception → Again, partial → Hard, complete → Good. Easy needs a human tap (guess).
 - Compute the rating in code from the decisions, so the mapping is testable.
-- Pre-select the grade, one tap to override. Store the model grade and the final grade.
+- Show the derived `Suggestion` only after the Assessment, as feedback on that Review. Never pre-place it on the Grid; the user's Assessment is the record. See `humane-design.md` and ADR-0002.
+- Hesitation is not Effort. The 3 s/easy, 15 s/hard mapping is unvalidated and should not drive Effort automatically ([#8](https://github.com/saiashirwad/latentmemory/issues/8)). Record timing, fluency and answer duration if useful, but Effort stays self-reported.
+- Store the model grade and the final grade. The `ratingOf` thresholds in `packages/domain/src/assessment.ts` are placeholders; [#7](https://github.com/saiashirwad/latentmemory/issues/7) was closed without review data.
 - A lenient grader inflates stability. Optimize weights only on confirmed grades until agreement is measured (inferred, untested).
 - Judges favor longer answers, and changing models moved leniency by up to 56 points in one 2026 preprint (arxiv 2610.05094).
 
@@ -51,7 +53,8 @@ TypeSafe AI's "System One" model. Typed questions in, typed answers with probabi
 
 - Extract key concepts onto the card when it's created. Grading checks against a list, not a vibe.
 - Temperature 0, reference answer in the prompt.
-- Before building UI, grade ~50 of your own answers and measure agreement with your own ratings.
+- Have the user commit Effort and Understanding before seeing any grader output or extracted checklist.
+- After the review flow can record audio, grade ~50 of the user's own spoken answers after STT using the frozen human-first protocol in `grader.md`. Fifty is failure discovery, not validation.
 
 ## Prior art
 

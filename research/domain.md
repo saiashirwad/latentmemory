@@ -42,6 +42,7 @@ Re-optimizing weights later only needs `(cardId, rating, reviewedAt)` per review
 - **Editing.** Keep the schedule. "Reset progress" appends a Reset event.
 - **Status.** Active, Suspended, Deleted. Delete is a soft tombstone; reviews stay. Burying waits for sibling cards.
 - **Undo.** An event, then replay the card. Most recent review only.
+- **Assessment → Rating is a guess.** `ratingOf` in `packages/domain/src/assessment.ts` uses 0.4 / 0.8 / 0.3 / 0.7 / 0.85. No real review data exists; [#7](https://github.com/saiashirwad/latentmemory/issues/7) was closed without validation. Store raw `{ effort, understanding }` and refit later. Likewise, hesitation → Effort is unvalidated ([#8](https://github.com/saiashirwad/latentmemory/issues/8)); don't infer Effort from response time.
 - **Duplicates.** The real risk with AI-made cards. Store a hash of the normalized front, unique per user. `create_card` returns near matches from FTS5. The tool tells Claude to `search_cards` first. Embeddings later.
 - **Notes vs cards.** Not yet. Make content a tagged union (`Basic` now, `Cloze` later) so `noteId` can arrive by migration.
 - **New cards per day.** Essential, since Claude makes cards in bursts. Default about 10. Order reviews by lowest retrievability. Cap reviews per day.

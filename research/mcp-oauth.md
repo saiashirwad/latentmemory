@@ -1,6 +1,6 @@
 # MCP + OAuth on Workers
 
-Spiked 2026-10-17, local `wrangler dev` only. The full flow passes end to end.
+Spiked 2026-10-17, local `wrangler dev` only. The full flow passes end to end. The MCP transport revision claude.ai actually speaks is still open; see below.
 
 ## Shape
 
@@ -37,12 +37,13 @@ export default new OAuthProvider<Cloudflare.Env>({
 
 ## Open: MCP protocol version
 
-- `layerHttpRequestScoped` (sessionless, Workers-friendly) only speaks `2026-07-28`. The official-SDK inspector fails against it with `MCP-Protocol-Version header is required`.
-- `layerHttp` speaks `2025-11-25` and `2025-06-18` but keeps the session in one isolate's memory. On real Workers that should break across isolates (inferred).
-- `2026-07-28` drops `Mcp-Session-Id` and `initialize`. Servers should mint no session ids.
-- No official source says which revision claude.ai speaks. An unverified April 2026 report says it doesn't echo `Mcp-Session-Id`.
+- Stateless hosting does not require modern-only MCP. [2025-11-25 permits session IDs to be omitted](https://modelcontextprotocol.io/specification/2025-11-25/basic/transports#session-management), while still requiring `initialize`.
+- The constraint is Effect's adapters, not the protocol. Installed Effect 4.0.5 `layerHttpRequestScoped` (sessionless, Workers-friendly) only speaks `2026-07-28`; `layerHttp` speaks `2025-11-25` and `2025-06-18` but keeps the session in one isolate's memory (inferred to break across isolates). The official-SDK inspector also fails against `layerHttpRequestScoped` with `MCP-Protocol-Version header is required`.
+- `2026-07-28` drops `Mcp-Session-Id` and `initialize`. Servers mint no session ids. Its [compatibility matrix](https://modelcontextprotocol.io/specification/2026-07-28/basic/versioning#backward-compatibility-with-initialization-based-versions) says legacy clients cannot fall forward to modern-only servers. Modern requests need matching version metadata/header plus method/name headers; logging only the first version header is insufficient.
+- Public claude.ai evidence is mixed. A [connector collaborator says the old header bug was fixed 2026-03-26](https://github.com/anthropics/claude-ai-mcp/issues/99#issuecomment-4431633875). A [June report](https://github.com/anthropics/claude-ai-mcp/issues/473) logs ClaudeAI requesting `2025-11-25`; its apparent handshake failure was [confirmed as >10-second initialize latency](https://github.com/anthropics/claude-ai-mcp/issues/473#issuecomment-4796224761), not a version mismatch. These are historical observations, not today's guarantee.
+- Current [Claude auth docs](https://claude.com/docs/connectors/building/authentication) specify OAuth requirements but do not establish a transport revision.
 - Cloudflare deprecated `McpAgent`. `createMcpHandler` (now in `@modelcontextprotocol/server@2`) is stateless and accepts 2025 Streamable HTTP clients.
-- Settle it by pointing claude.ai at a deployed endpoint and logging the headers.
+- **Next test.** Point a fresh claude.ai connector at the exact modern-only layer, then compare a legacy/session-ID-optional endpoint if needed. Capture the RPC method, initialize requested/selected version or modern `_meta`, protocol/method headers, session presence/digest, status/error and latency. Never log tokens, cookies or full bodies. Require successful discovery plus an inert tool call; isolate transport authlessly first, then repeat with OAuth. Tracked in [#4](https://github.com/saiashirwad/latentmemory/issues/4).
 
 ## What claude.ai requires
 
