@@ -1,10 +1,10 @@
 {
-  "name": "flashcards",
+  "name": "latentmemory",
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vp run --filter @flashcards/api dev",
-    "typecheck": "vp run --filter '!flashcards' typecheck",
+    "dev": "vp run --filter @latentmemory/api dev",
+    "typecheck": "vp run --filter '!latentmemory' typecheck",
     "build": "vp run -r build"
   },
   "devDependencies": {

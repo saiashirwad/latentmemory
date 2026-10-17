@@ -223,7 +223,7 @@ importers:
 
   apps/api:
     dependencies:
-      '@flashcards/domain':
+      '@latentmemory/domain':
         specifier: workspace:*
         version: link:../../packages/domain
       alchemy:
@@ -242,7 +242,7 @@ importers:
 
   apps/web:
     dependencies:
-      '@flashcards/domain':
+      '@latentmemory/domain':
         specifier: workspace:*
         version: link:../../packages/domain
       effect:

@@ -1,5 +1,5 @@
 {
-  "name": "@flashcards/web",
+  "name": "@latentmemory/web",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -9,7 +9,7 @@
     "typecheck": "tsc"
   },
   "dependencies": {
-    "@flashcards/domain": "workspace:*",
+    "@latentmemory/domain": "workspace:*",
     "effect": "4.0.5",
     "foldkit": "0.168.0"
   },
