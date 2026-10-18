@@ -10,3 +10,4 @@ dist
 .DS_Store
 .claude/worktrees/
 .dev.vars
+.pnpm-store/
